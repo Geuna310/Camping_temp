@@ -1,22 +1,34 @@
 function checkDuplicate(field, inputSelector) {
-    let value = $(inputSelector).val().trim();
+    let value = $(inputSelector).val().trim(); 
+	let errorSelector = "#" + inputSelector.slice(1) + "Error"; // 오류 메시지 표시 (div)
+	
+	// 기존 오류 메시지 초기화
+	$(errorSelector).text("").removeClass("text-danger small mt-1");
 
     if (value === "") {
-        alert(getEmptyFieldMessage(field));
-        return;
+        $(errorSelector).text(getEmptyFieldMessage(field).addClass("text-danger small mt-1"));
+		return;
     }
 
-    $.ajax({
-        url: `/user/check-duplicate`,
-        type: "GET",
-        data: { field: field, value: value },
-        success: function(isDuplicate) {
-            alert(getFieldMessage(field, isDuplicate));
-        },
-        error: function() {
-            alert("중복 확인 중 오류가 발생했습니다.");
-        }
-    });
+	$.ajax({
+	        url: `/user/check-duplicate`,
+	        type: "GET",
+	        data: { field: field, value: value },
+	        success: function(isDuplicate) {
+	           	let message = getFieldMessage(field, isDuplicate);
+				$(errorSelector).text(message);
+				
+				if (isDuplicate) {
+					$(errorSelector).addClass("text-danger small mt-1");
+				} else {
+					$(errorSelector).addClass("text small mt-1");
+				}
+				
+	        },
+	        error: function() {
+	            $(errorSelector).text("중복 확인 중 오류가 발생했습니다.");
+	        }
+	    });
 }
 
 // 필드별 맞춤 메시지 반환

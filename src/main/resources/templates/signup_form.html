@@ -1,0 +1,73 @@
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+	<div class="d-flex justify-content-center align-items-center min-vh-100">
+	<div class="card shadow p-4 w-50">
+    <div class="text-center mb-3">
+        <div>
+            <h4>회원가입</h4>
+        </div>
+    </div>
+		
+    <form th:action="@{/user/signup}" th:object="${userCreateForm}" method="post">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+            <label for="userId" class="form-label">아이디</label>
+			<div class="input-group">
+            <input type="text" id="userId" th:field="*{userId}" class="form-control">
+			<button type="button" onclick="checkDuplicate('userId', '#userId')" class="btn btn-outline-secondary btn-sm">중복 확인</button>
+			               </div>
+        </div>
+        <div class="mb-3">
+            <label for="realName" class="form-label">이름</label>
+            <input type="text" th:field="*{realName}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="nickname" class="form-label">닉네임</label>
+			<div class="input-group">
+          	  	<input type="text" id="nickname" th:field="*{nickname}" class="form-control">
+				<button type="button" onclick="checkDuplicate('nickname', '#nickname')" class="btn btn-outline-secondary btn-sm">중복 확인</button>
+			</div>
+			 </div>
+        <div class="mb-3">
+            <label for="password1" class="form-label">비밀번호</label>
+            <input type="password" th:field="*{password1}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="password2" class="form-label">비밀번호 확인</label>
+            	<input type="password" th:field="*{password2}" class="form-control">
+		</div>
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+			<div class="input-group">
+            <input type="email" id="email" th:field="*{email}" class="form-control">
+				<button type="button" onclick="checkDuplicate('email', '#email')" class="btn btn-outline-secondary btn-sm">중복 확인</button>
+			 </div>
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label">전화번호</label>
+			<div class="input-group">
+            	<input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control">
+				<button type="button" onclick="checkDuplicate('phoneNumber', '#phoneNumber')" class="btn btn-outline-secondary btn-sm">중복 확인</button>
+			 </div>
+        </div>
+        <div class="mb-3">
+            <label for="birthday" class="form-label">생년월일</label>
+            <input type="date" th:field="*{birthday}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="gender" class="form-label">성별</label>
+            <select id="gender" th:field="*{gender}" class="form-control">
+				<option th:each="g : ${T(com.project.camp.user.Gender).values()}"
+					th:value="${g}"
+					th:text="${g.getDisplayName()}">
+				</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">회원가입</button>
+    </form>
+	</div>
+	</div>
+</div>
+</html>
